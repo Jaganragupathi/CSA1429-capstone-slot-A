@@ -1,0 +1,38 @@
+import ast
+import tokenize
+import io
+
+class SyntaxChecker:
+    def _init(self, code):  # Fixed incorrect __init_
+        self.code = code
+
+    def check_syntax(self):
+        """Checks for syntax errors in Python code."""
+        try:
+            ast.parse(self.code)
+            return "No syntax errors found. Code is valid."
+        except SyntaxError as e:
+            return f"Syntax Error: {e.msg} at line {e.lineno}, column {e.offset}"
+
+    def check_indentation(self):
+        """Checks for indentation errors in Python code."""
+        io_obj = io.StringIO(self.code)
+        try:
+            for token in tokenize.generate_tokens(io_obj.readline):
+                pass
+            return "Indentation is correct."
+        except tokenize.TokenError as e:
+            return f"Indentation Error: {str(e)}"
+
+# Corrected main execution block
+if _name_ == "_main":  # Fixed incorrect __name_
+    sample_code = """ 
+def sample_function():
+    print("Hello World")
+    if True:
+        print("This is a test")
+"""  # Corrected indentation in sample_code
+
+    checker = SyntaxChecker(sample_code)
+    print(checker.check_syntax())  # Check syntax errors
+    print(checker.check_indentation())  # Check indentation errors
